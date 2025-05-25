@@ -115,41 +115,112 @@ export default function TarotGame({}: TarotGameProps) {
           >
             <div className="mb-6">
               <p className="text-xl mb-2">카드를 선택하세요 ({selectedCards.length}/4)</p>
-              <div className="flex justify-center gap-2">
+              <div className="flex justify-center gap-2 mb-4">
                 {[0, 1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className={`w-4 h-4 rounded-full ${
+                    className={`w-4 h-4 rounded-full transition-colors duration-300 ${
                       i < selectedCards.length ? 'bg-yellow-400' : 'bg-gray-600'
                     }`}
                   />
                 ))}
               </div>
+              
+              {/* 선택된 카드들 미리보기 */}
+              {selectedCards.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-white/5 backdrop-blur-sm rounded-xl p-4 max-w-md mx-auto"
+                >
+                  <p className="text-sm text-gray-300 mb-3">선택된 카드들:</p>
+                  <div className="grid grid-cols-4 gap-2">
+                    {[0, 1, 2, 3].map((i) => {
+                      const areaNames = ['전반운', '연애운', '직업운', '재물운'];
+                      return (
+                        <div key={i} className="text-center">
+                          <div className={`w-12 h-16 rounded border-2 flex items-center justify-center text-xs transition-all duration-300 ${
+                            i < selectedCards.length 
+                              ? 'border-yellow-400 bg-yellow-400/20 text-yellow-300' 
+                              : 'border-gray-600 bg-gray-800/50 text-gray-500'
+                          }`}>
+                            {i < selectedCards.length ? '🃏' : '?'}
+                          </div>
+                          <p className="text-xs mt-1 text-gray-400">{areaNames[i]}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
             </div>
 
             <div className="grid grid-cols-11 gap-2 max-w-6xl mx-auto">
-              {shuffledCards.map((cardInfo, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                  whileHover={{ scale: 1.05, y: -10 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => selectCard(index)}
-                  className={`
-                    relative cursor-pointer transition-all duration-300
-                    ${selectedCards.some(card => card.cardId === cardInfo.cardId && card.isReversed === cardInfo.isReversed) 
-                      ? 'opacity-30 cursor-not-allowed' 
-                      : 'hover:shadow-lg hover:shadow-purple-500/50'
-                    }
-                  `}
-                >
-                  <div className="bg-gradient-to-br from-indigo-800 to-purple-800 rounded-lg aspect-[2/3] flex items-center justify-center border-2 border-purple-400/30">
-                    <div className="text-4xl">🃏</div>
-                  </div>
-                </motion.div>
-              ))}
+              {shuffledCards.map((cardInfo, index) => {
+                const isSelected = selectedCards.some(card => card.cardId === cardInfo.cardId && card.isReversed === cardInfo.isReversed);
+                const selectedIndex = selectedCards.findIndex(card => card.cardId === cardInfo.cardId && card.isReversed === cardInfo.isReversed);
+                
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ 
+                      opacity: 1, 
+                      y: isSelected ? -15 : 0,
+                      scale: isSelected ? 1.1 : 1
+                    }}
+                    transition={{ delay: index * 0.05, duration: 0.3 }}
+                    whileHover={!isSelected ? { scale: 1.05, y: -10 } : {}}
+                    whileTap={!isSelected ? { scale: 0.95 } : {}}
+                    onClick={() => selectCard(index)}
+                    className={`
+                      relative cursor-pointer transition-all duration-300
+                      ${isSelected 
+                        ? 'cursor-default' 
+                        : 'hover:shadow-lg hover:shadow-purple-500/50'
+                      }
+                    `}
+                  >
+                    <div className={`
+                      bg-gradient-to-br from-indigo-800 to-purple-800 rounded-lg aspect-[2/3] 
+                      flex items-center justify-center border-2 transition-all duration-300
+                      ${isSelected 
+                        ? 'border-yellow-400 shadow-lg shadow-yellow-400/50 bg-gradient-to-br from-yellow-600/20 to-orange-600/20' 
+                        : 'border-purple-400/30'
+                      }
+                    `}>
+                      <div className="text-4xl">🃏</div>
+                      
+                      {/* 선택됨 표시 */}
+                      {isSelected && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="absolute -top-2 -right-2 bg-yellow-400 text-black rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm shadow-lg"
+                        >
+                          {selectedIndex + 1}
+                        </motion.div>
+                      )}
+                      
+                      {/* 빛나는 효과 */}
+                      {isSelected && (
+                        <motion.div
+                          animate={{ 
+                            opacity: [0.5, 1, 0.5],
+                            scale: [1, 1.02, 1]
+                          }}
+                          transition={{ 
+                            duration: 2, 
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                          className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-orange-400/20 rounded-lg"
+                        />
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
         )}
