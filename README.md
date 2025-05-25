@@ -1,6 +1,6 @@
 # 🔮 타로 운세 게임
 
-밭가는개발자(https://www.batgan.com)가 만든 타로 카드 운세 보기 게임입니다.
+밭가는개발자가 만든 타로 카드 운세 보기 게임입니다.
 
 ## ✨ 주요 기능
 
@@ -28,31 +28,31 @@
 ## 🚀 실행 방법
 
 ### 의존성 설치
-\`\`\`bash
+```bash
 npm install
 # 또는
 yarn install
-\`\`\`
+```
 
 ### 개발 서버 실행
-\`\`\`bash
+```bash
 npm run dev
 # 또는
 yarn dev
-\`\`\`
+```
 
 브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어서 확인하세요.
 
 ### 빌드
-\`\`\`bash
+```bash
 npm run build
 # 또는
 yarn build
-\`\`\`
+```
 
 ## 📁 프로젝트 구조
 
-\`\`\`
+```
 tarot-game/
 ├── app/                    # Next.js 13+ App Router
 │   ├── globals.css        # 글로벌 스타일
@@ -63,7 +63,7 @@ tarot-game/
 ├── lib/                  # 유틸리티 함수
 │   └── tarot.ts          # 타로 카드 데이터 및 로직
 └── public/               # 정적 파일
-\`\`\`
+```
 
 ## 🎴 타로 카드 정보
 
@@ -107,7 +107,7 @@ tarot-game/
 ## 👨‍💻 제작자
 
 **밭가는개발자 (동훈)**
-- 브랜드: 밭간 (batgan.com)
+- 브랜드: 밭간 ([batgan.com](https://batgan.com))
 - AI 코딩 교육, 컨설팅, 서비스 지원
 - 블로그: 밭가는개발자 블로그
 - 유튜브: 밭가는개발자의 코드농장
